@@ -1,16 +1,26 @@
 """
 @Author: Manoj KR
 
-@Date: 2024-08-01 12:40:02
+@Date: 2024-08-02 10:25:12
 
 @Last Modified by: Manoj KR
 
-@Last Modified time: 2024-08-01 13:38:11
+@Last Modified time: 2024-08-02 11:33:01
 
-@Title : Calculate Daily Employee Wage  .
+@Title : Calculating Wages for a Month.
 """  
 import random
+FULL_TIME = 8
+PART_TIME = 4
+WAGE_HOUR = 20
+ABSENT = 0
+FULL_TIME_WAGE_DAY= FULL_TIME * WAGE_HOUR
+PART_TIME_WAGE_DAY= PART_TIME * WAGE_HOUR
+DAYS_MONTH = 20
+
 def display_welcome():
+    
+ 
     """
      description:
         This function is used to Print welcome message .
@@ -48,7 +58,7 @@ def check_full_or_part_time():
     """
     return random.randint(0 , 1)
 
-def calculate_wage_of_employee():
+def calculate_wage_for_day():
     """
      description:
         This function is used to give Calculate Daily Employee Wage for both Full Time and Part time Employee.
@@ -76,19 +86,60 @@ def swith_statment(match_values):
            80 -> if employe Present and Part Time.
            0 -> if employee Absent.
     """
+   
     match match_values:
         case [1,1] : 
-            print("Employee Present Today")
-            return 8*20
+            return FULL_TIME*WAGE_HOUR
         case [1,0] :
-            print("for Part time")
-            return 4*20
+            return PART_TIME*WAGE_HOUR
         case _:
-            print("Employee Absent Today")
-            return 0
+            return ABSENT
+        
+def calculate_wage_for_month():
+    """
+    description:
+        This function is used to give Calculate Montly Employee Wage (20 days in a month) 
+    parameters:
+             None
+    return: 
+           total_month_wage : Total Mnth wage of Employee.
+           full_time : Nuber of days Employee Wark for Full Time
+           part_time : Nuber of days Employee Wark for Part Time
+           absent : Number of days Employee Absent in a Month
+           present : Number of days Employee Present in a Month
+    
+    """
+    
+    total_month_wage=full_time=part_time=absent=present=0
+    
+    for i in range(DAYS_MONTH):
+        wage=calculate_wage_for_day()
+        if wage > 0 :
+            present+=1
+            if wage == FULL_TIME_WAGE_DAY:
+                full_time +=1
+                total_month_wage += wage
+            else :
+                part_time +=1
+                total_month_wage += wage
+        else :
+            absent +=1
+    
+    return total_month_wage,present,absent,full_time,part_time
+        
+
+
+  
+     
             
 if __name__ =="__main__":
     display_welcome()
-    empoyee_wage=0
-    empoyee_wage=calculate_wage_of_employee()
-    print("Today Employee Wage =",empoyee_wage)
+    total_month_wage,present,absent,full_time,part_time=calculate_wage_for_month()
+    print("The Employee in Month (20 days)")
+    print("---------------------------------")
+    print(f"Present :{present}",f"Absent :{absent}",sep="\t | \t")
+    print("---------------------------------")
+    print(f"{full_time} Days Work Full Time",f"{part_time} Days Work Part Time",sep="   |   ")
+    print("---------------------------------")
+    print(f"Total Wage Per Month = {total_month_wage}")
+    
