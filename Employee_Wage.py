@@ -7,13 +7,12 @@
 
 @Last Modified time: 2024-08-02 11:33:01
 
-@Title : Calculating Wages for a Month.
+@Title : Calculate Wages till a condition of total working hours or days is reached for a month (100 hours and 20 days).
 """  
 import random
 FULL_TIME = 8
 PART_TIME = 4
 WAGE_HOUR = 20
-ABSENT = 0
 FULL_TIME_WAGE_DAY= FULL_TIME * WAGE_HOUR
 PART_TIME_WAGE_DAY= PART_TIME * WAGE_HOUR
 DAYS_MONTH = 20
@@ -93,53 +92,45 @@ def swith_statment(match_values):
         case [1,0] :
             return PART_TIME*WAGE_HOUR
         case _:
-            return ABSENT
+            return 0
         
-def calculate_wage_for_month():
+def calculate_wage_till_condition():
     """
     description:
-        This function is used to give Calculate Montly Employee Wage (20 days in a month) 
+        This function is used Calculate Wages till a condition of total working hours or days is reached for a month
+        Assume --> 100 hours and 20 days
     parameters:
              None
     return: 
-           total_month_wage : Total Mnth wage of Employee.
-           full_time : Nuber of days Employee Wark for Full Time
-           part_time : Nuber of days Employee Wark for Part Time
-           absent : Number of days Employee Absent in a Month
-           present : Number of days Employee Present in a Month
-    
+           list = employee daily wages.
     """
-    
-    total_month_wage=full_time=part_time=absent=present=0
-    
-    for i in range(DAYS_MONTH):
+    wage_list=[]
+    HOURS = 100 
+    DAYS = 20
+    current_hours=0
+    current_days =0
+    while current_hours <= HOURS and current_days < DAYS :
+        current_days += 1
         wage=calculate_wage_for_day()
-        if wage > 0 :
-            present+=1
-            if wage == FULL_TIME_WAGE_DAY:
-                full_time +=1
-                total_month_wage += wage
-            else :
-                part_time +=1
-                total_month_wage += wage
+        if  wage == FULL_TIME_WAGE_DAY:
+            wage_list.append(wage)
+            current_hours += FULL_TIME
+           
+        elif wage == PART_TIME_WAGE_DAY:
+            wage_list.append(wage)
+            current_hours += PART_TIME
+            
         else :
-            absent +=1
-    
-    return total_month_wage,present,absent,full_time,part_time
+             wage_list.append(0)
         
-
-
-  
+             
+    return wage_list
      
             
 if __name__ =="__main__":
     display_welcome()
-    total_month_wage,present,absent,full_time,part_time=calculate_wage_for_month()
-    print("The Employee in Month (20 days)")
-    print("---------------------------------")
-    print(f"Present :{present}",f"Absent :{absent}",sep="\t | \t")
-    print("---------------------------------")
-    print(f"{full_time} Days Work Full Time",f"{part_time} Days Work Part Time",sep="   |   ")
-    print("---------------------------------")
-    print(f"Total Wage Per Month = {total_month_wage}")
+    employee_wage_list=calculate_wage_till_condition()
+    print(f"Employee_Wage_List {employee_wage_list}")
+    print(f"Total Wage of Employee : {sum(employee_wage_list)}")
     
+  
